@@ -13,6 +13,7 @@ chrome.extension.onConnect.addListener(function(port){
 		//console.log('chrome.extension.onConnect');
     });
 	//var k = 0;
+var lastId = 0;
 chrome.tabs.onUpdated.addListener(function(id, info, tab) {
 		
 		if (info && info.status && (info.status.toLowerCase() === 'complete')){
@@ -26,7 +27,7 @@ chrome.tabs.onUpdated.addListener(function(id, info, tab) {
 		//console.log(window.document);
 			
 			//var port = chrome.tabs.connect(id);
-            
+            lastId = id;
 			chrome.tabs.executeScript(id, {code:"initialization()"});
 		
 			//port.postMessage({method:'setTabId', data:id});
@@ -93,7 +94,11 @@ function getResalt()
 				// }, 
 				// null);		
 		// });
-	return {mails:mails,count:count};
+	return {mails:mails,count:count,id:lastId};
+}
+function UpdateData(id)
+{	
+	chrome.tabs.executeScript(id, {code:"initialization()"});
 }
 
 
